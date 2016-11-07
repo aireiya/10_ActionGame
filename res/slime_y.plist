@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+        	     <key>y_slime01</key>
+            <dict>
+                <key>frame</key>
+                <string>{{25,70},{75,57}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceSize</key>
+                <string>{75,57}</string>
+            </dict>
+            
+                 <key>y_slime02</key>
+            <dict>
+                <key>frame</key>
+                <string>{{160,70},{75,57}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceSize</key>
+                <string>{75,57}</string>
+            </dict>
+            
+                 <key>y_slime03</key>
+            <dict>
+                <key>frame</key>
+                <string>{{285,70},{75,57}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceSize</key>
+                <string>{75,57}</string>
+            </dict>
+            
+                 <key>y_slime04</key>
+            <dict>
+                <key>frame</key>
+                <string>{{415,70},{75,57}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceSize</key>
+                <string>{75,57}</string>
+            </dict>
+            
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>2</integer>
+        </dict>
+    </dict>
+</plist>

@@ -2,13 +2,31 @@ var HoverHeight = 300; //ホバリング
 var RiseHeight = 240; //Rise上昇
 
 var enemyBat;
+var enemyzonbi;
+var zonbi;
+var zonsuu = 0;
+var gslimesuu = 0;
+var batsuu = 0;
+
+//var zonbiPosition;
+//var zonbiSprite;
 
 var enemyLayer = cc.Layer.extend({
    ctor: function() {
       this._super();
       enemyBat = new EnemyBat();
       this.addChild(enemyBat);
+      enemyBat02 = new EnemyBat();
+      this.addChild(enemyBat02);
+      enemyzonbi = new zonbiLayer();
+      this.addChild(enemyzonbi);
       //cc.eventManager.addListener(listener, this);
+      enemyzonbi02 = new zonbiLayer();
+      this.addChild(enemyzonbi02);
+      enemygslime = new gslimeLayer();
+      this.addChild(enemygslime);
+      enemygslime02 = new gslimeLayer();
+      this.addChild(enemygslime02);
 
    }
 
@@ -20,10 +38,21 @@ var EnemyBat = cc.Sprite.extend({
     this.velocity = cc.p(0, 0);
     this.FrameCount = 0;
 
+if(batsuu == 1){
     for (i = 0; i < 7; i++) {　　　　　　
       for (j = 0; j < 10; j++) {
         if (level[i][j] == 5) {
           this.setPosition(tileSize / 2 + tileSize * j, 96 * (7 - i) - tileSize / 2);
+        }
+      }
+    }
+  }
+
+    for (i = 0; i < 7; i++) {　　　　　　
+      for (j = 0; j < 10; j++) {
+        if (level[i][j] == 5 && batsuu == 0) {
+          this.setPosition(tileSize / 2 + tileSize * j, 96 * (7 - i) - tileSize / 2);
+          batsuu++;
         }
       }
     }
@@ -69,12 +98,18 @@ var EnemyBat = cc.Sprite.extend({
       //8の字旋回軌道をsin計算で適当に補正
       velocity_y += 0.075 * Math.sin(this.FrameCount * 0.015) * Math.sin(this.FrameCount * 0.04);
 
+      if (Math.abs(player.getPosition().x - this.getPosition().x) < 1 && hit == 0) {
+       /*plhp[hpsuu].setVisible(true);;
+       hpsuu--;
+       hit = 1;*/
+   }
+
       //console.log(velocity_x, velocity_y);
 
       this.velocity.x = velocity_x;
       this.velocity.y = velocity_y;
 
-      //  console.log(MoveDirection, this.velocity.x, offset.x);
+      //  console.log(MoveDirection, this.veloci:::ty.x, offset.x);
       if (this.velocity.x <= 0)
         this.setFlippedX(true);
       if (this.velocity.x > 0)
@@ -88,6 +123,186 @@ var EnemyBat = cc.Sprite.extend({
 
 
 });
+
+//◆◆◆◆◆◆◆◆◆◆こうもり1体目◆◆◆◆◆◆◆◆
+
+var zonbiLayer = cc.Layer.extend({
+   ctor: function() {
+      this._super();
+      zonbi = new Zonbi();
+      this.addChild(zonbi);
+      },
+    });
+
+
+var Zonbi = cc.Sprite.extend({
+   ctor: function() {
+      this._super();
+      this.workingFlag = false;
+      this.xSpeed = 0;
+      this.ySpeed = 0;
+      //this.jumpFlag = false;
+
+      if(zonsuu == 1){
+        for (i = 0; i < 7; i++) {　　　　　　
+           for (j = 0; j < 10; j++) {
+              if (level[i][j] == 4) {
+                 this.setPosition(tileSize / 2 + tileSize * j, 90 * (7 - i) - tileSize / 2);
+                 console.log("ゾンビ２");
+                 zonsuu++;
+
+              }
+           }
+        }
+      }
+
+      for (i = 0; i < 7; i++) {　　　　　　
+         for (j = 0; j < 10; j++) {
+            if (level[i][j] == 4 && zonsuu == 0) {
+               this.setPosition(tileSize / 2 + tileSize * j, 90 * (7 - i) - tileSize / 2);
+               console.log("ぞんびー");
+               zonsuu++;
+            }
+         }
+      }
+
+      // スプライトシートをキャッシュに登録
+      cc.spriteFrameCache.addSpriteFrames(res.zon_plist, res.zon_sheet);
+
+      // スプライトフレームを取得 player01,player02はplistの中で定義されいいる
+      var frame1 = cc.spriteFrameCache.getSpriteFrame("zonwalk01");
+      var frame2 = cc.spriteFrameCache.getSpriteFrame("zonwalk02");
+      var frame3 = cc.spriteFrameCache.getSpriteFrame("zonwalk03");
+      var frame4 = cc.spriteFrameCache.getSpriteFrame("zonwalk04");
+
+      //スプライトフレームを配列に登録
+      var animationframe = [];
+      animationframe.push(frame1);
+      animationframe.push(frame2);
+      animationframe.push(frame3);
+      animationframe.push(frame4);
+      //スプライトフレームの配列を連続再生するアニメーションの定義
+      var animation = new cc.Animation(animationframe, 0.5);
+      //永久ループのアクションを定義
+      var action = new cc.RepeatForever(new cc.animate(animation));
+      //実行
+      this.initWithFile(res.zon_sheet);
+      //if(pif == 1){
+        this.runAction(action);
+      //}
+
+      this.scheduleUpdate();
+   },
+   update: function(dt) {
+
+     /*if (this.getPosition().y < 90){
+       this.ySpeed = 0;
+     }
+     else this.ySpeed = this.ySpeed - 0.5;*/
+
+     if(Math.abs(player.getPosition().x - this.getPosition().x) > 1 ){
+       if(player.getPosition().x - this.getPosition().x > 0){
+         this.setPosition(this.getPosition().x + 1, this.getPosition().y - this.ySpeed);
+         this.setFlippedX(false);
+       }
+       if(player.getPosition().x - this.getPosition().x < 0){
+         this.setPosition(this.getPosition().x - 1, this.getPosition().y - this.ySpeed);
+         this.setFlippedX(true);
+       }
+
+     }
+   },
+ });
+//◆◆すらいむ◆◆
+ var gslimeLayer = cc.Layer.extend({
+    ctor: function() {
+       this._super();
+       gslime = new Gslime();
+       this.addChild(gslime);
+       },
+     });
+
+
+ var Gslime = cc.Sprite.extend({
+    ctor: function() {
+       this._super();
+       this.workingFlag = false;
+       this.xSpeed = 0;
+       this.ySpeed = 0;
+       //this.jumpFlag = false;
+
+       if(gslimesuu == 1){
+         for (i = 0; i < 7; i++) {
+            for (j = 0; j < 10; j++) {
+               if (level[i][j] == 9) {
+                  this.setPosition(tileSize / 2 + tileSize * j, 80 * (7 - i) - tileSize / 2);
+                  console.log("すらいむ2");
+                  gslimesuu++;
+               }
+            }
+         }
+       }
+
+       for (i = 0; i < 7; i++) {
+          for (j = 0; j < 10; j++) {
+             if (level[i][j] == 9 && gslimesuu == 0) {
+                this.setPosition(tileSize / 2 + tileSize * j, 80 * (7 - i) - tileSize / 2);
+                console.log("すらいむー");
+                gslimesuu++;
+
+             }
+          }
+       }
+
+       // スプライトシートをキャッシュに登録
+       cc.spriteFrameCache.addSpriteFrames(res.gslime_plist, res.gslime_sheet);
+
+       // スプライトフレームを取得 player01,player02はplistの中で定義されいいる
+       var frame1 = cc.spriteFrameCache.getSpriteFrame("g_slime01");
+       var frame2 = cc.spriteFrameCache.getSpriteFrame("g_slime02");
+       var frame3 = cc.spriteFrameCache.getSpriteFrame("g_slime03");
+       var frame4 = cc.spriteFrameCache.getSpriteFrame("g_slime04");
+
+       //スプライトフレームを配列に登録
+       var animationframe = [];
+       animationframe.push(frame1);
+       animationframe.push(frame2);
+       animationframe.push(frame3);
+       animationframe.push(frame4);
+       //スプライトフレームの配列を連続再生するアニメーションの定義
+       var animation = new cc.Animation(animationframe, 0.5);
+       //永久ループのアクションを定義
+       var action = new cc.RepeatForever(new cc.animate(animation));
+       //実行
+       this.initWithFile(res.gslime_sheet);
+       //if(pif == 1){
+         this.runAction(action);
+       //}
+
+       this.scheduleUpdate();
+    },
+    update: function(dt) {
+/*
+      if (this.getPosition().y < 80) this.ySpeed = 0;
+      else this.ySpeed = this.ySpeed - 0.5;
+*/
+      if(Math.abs(player.getPosition().x - this.getPosition().x) > 1 ){
+        if(player.getPosition().x - this.getPosition().x > 1){
+          this.setPosition(this.getPosition().x + 1, this.getPosition().y - this.ySpeed);
+          this.setFlippedX(false);
+        }
+        if(player.getPosition().x - this.getPosition().x < 1){
+          this.setPosition(this.getPosition().x - 1, this.getPosition().y - this.ySpeed);
+          this.setFlippedX(true);
+        }
+
+      }else if (Math.abs(player.getPosition().x - this.getPosition().x) < 1 && hit == 0) {
+        /*plhp[hpsuu] = setVisible(false);;
+        hpsuu--;
+        hit = 1;*/
+    }
+    },
+  });
 //始点、終点、の間で 0～1.0の割合の位置を返す関数
 function lerp(fStart, fEnd, fPercent) {
   return fStart + ((fEnd - fStart) * fPercent);
